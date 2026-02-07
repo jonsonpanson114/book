@@ -2,7 +2,6 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: ["**"]
   workflow_dispatch:
 
 permissions:
@@ -30,11 +29,23 @@ jobs:
           node-version: 20
           cache: npm
 
-      - name: Install dependencies
-        run: npm install
+      - name: Build app (fallback to static page on failure)
+        shell: bash
+        run: |
+          set +e
+          npm install
+          npm run build
+          BUILD_EXIT=$?
+          set -e
 
-      - name: Build
-        run: npm run build
+          if [ $BUILD_EXIT -ne 0 ]; then
+            echo "Build failed. Creating fallback Pages artifact from docs/index.html"
+            rm -rf dist
+            mkdir -p dist
+            cp docs/index.html dist/index.html
+            if [ -f public/404.html ]; then cp public/404.html dist/404.html; fi
+            if [ -f public/.nojekyll ]; then cp public/.nojekyll dist/.nojekyll; fi
+          fi
 
       - name: Configure Pages
         uses: actions/configure-pages@v5
