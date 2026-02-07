@@ -3,20 +3,55 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>The Arena - GitHub Pages Fallback</title>
+    <title>The Arena | GitHub Pages Quick Launch</title>
     <style>
-      body{margin:0;background:#020617;color:#e2e8f0;font-family:system-ui,-apple-system,Segoe UI,sans-serif;display:grid;place-items:center;min-height:100vh}
-      .card{max-width:720px;padding:24px;border:1px solid #334155;border-radius:12px;background:#0f172a}
-      a{color:#93c5fd}
-      code{background:#111827;padding:2px 6px;border-radius:6px}
+      :root{color-scheme:dark}
+      body{margin:0;background:#020617;color:#e2e8f0;font-family:system-ui,-apple-system,'Segoe UI',sans-serif}
+      .wrap{max-width:900px;margin:40px auto;padding:0 16px}
+      .card{background:#0f172a;border:1px solid #334155;border-radius:14px;padding:18px 20px;margin-bottom:14px}
+      h1{margin:0 0 10px;font-size:28px}
+      h2{margin:0 0 10px;font-size:18px;color:#cbd5e1}
+      p,li{line-height:1.6;color:#cbd5e1}
+      code{background:#111827;border:1px solid #374151;border-radius:6px;padding:2px 6px}
+      .ok{color:#86efac}.ng{color:#fca5a5}.info{color:#93c5fd}
+      a.btn{display:inline-block;background:#1d4ed8;color:#fff;text-decoration:none;padding:10px 14px;border-radius:10px;margin-right:8px}
+      .mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px}
     </style>
   </head>
   <body>
-    <div class="card">
-      <h1>The Arena</h1>
-      <p>GitHub Pages のソース設定が <code>/docs</code> になっている場合でも 404 にならないように、このフォールバックページを配置しています。</p>
-      <p>通常運用は GitHub Actions による Pages デプロイです。最新のデプロイ結果は Actions タブを確認してください。</p>
-      <p><a href="https://github.com/jonsonpanson114/book/actions">Actions を開く</a></p>
+    <div class="wrap">
+      <div class="card">
+        <h1>The Arena を表示するためのページ</h1>
+        <p>今見えているなら、GitHub Pages の配信自体は生きています。次は <strong>本体アプリのデプロイ方式</strong> を揃えれば表示できます。</p>
+        <a class="btn" href="https://github.com/jonsonpanson114/book/actions">GitHub Actions を開く</a>
+        <a class="btn" href="https://github.com/jonsonpanson114/book/settings/pages">Pages 設定を開く</a>
+      </div>
+
+      <div class="card">
+        <h2>表示できないときの最短手順（2分）</h2>
+        <ol>
+          <li>GitHub の <strong>Settings → Pages</strong> を開く。</li>
+          <li><strong>Build and deployment</strong> を <code>GitHub Actions</code> にする。</li>
+          <li><strong>Actions</strong> タブで最新の <code>Deploy to GitHub Pages</code> が成功しているか確認。</li>
+          <li>URL <code>https://jonsonpanson114.github.io/book/</code> を再読み込み。</li>
+        </ol>
+        <p class="mono">※ /docs 配信のままだと、React (Vite) は未ビルドのため正しく動かないことがあります。</p>
+      </div>
+
+      <div class="card" id="diag"></div>
     </div>
+
+    <script>
+      const root = document.getElementById('diag');
+      const path = window.location.pathname;
+      const expected = '/book/';
+      const goodPath = path.startsWith(expected);
+      root.innerHTML = `
+        <h2>現在の診断</h2>
+        <p>現在URL: <code>${window.location.href}</code></p>
+        <p>パス判定: ${goodPath ? '<span class="ok">OK（/book 配下）</span>' : '<span class="ng">NG（/book 配下ではない）</span>'}</p>
+        <p class="info">Actions のデプロイ成功後、数十秒〜数分で反映されます。</p>
+      `;
+    </script>
   </body>
 </html>
