@@ -1,12 +1,12 @@
 import React from 'react';
 import { Brain, Library, User } from 'lucide-react';
 
-interface LayoutProps {
+interface AppShellProps {
     children: React.ReactNode;
     sidebarContent?: React.ReactNode;
 }
 
-export const Layout: React.FC<LayoutProps> = ({ children, sidebarContent }) => {
+export const AppShell: React.FC<AppShellProps> = ({ children, sidebarContent }) => {
     return (
         <div className="min-h-screen bg-[#0a0f1c] text-slate-300 flex overflow-hidden font-sans selection:bg-yellow-500/30">
             {/* Sidebar Navigation */}

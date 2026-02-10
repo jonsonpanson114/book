@@ -7,18 +7,40 @@ const JINNAI_RESPONSES = {
         "『マインドセット』の時は逆のこと書いてたぞ？一貫性がないな。",
         "その理論、部下が聞いたら『また部長が何か言ってる』で終わるぞ。",
         "リスクヘッジばかり考えてないか？攻めはどこだ？",
+        "成長？そんな抽象的な言葉で満足してるのか？",
+        "計画を立てる前に、なぜ今までできなかったか考えたか？",
     ],
     serendipity: [
         "その営業理論、ボルダリングの重心移動と同じじゃないか？",
         "伊坂幸太郎なら、ここで伏線を回収するだろうな。",
         "六甲全山縦走の苦しさと似てるな。終わった後の景色は見えてるか？",
         "現代アートみたいに、もっと抽象度を上げてみろ。",
+        "ジャズの即興演奏みたいなもんだ。理論は知ってるが、その場で捨てられるか？",
+        "映画『マトリックス』の赤い薬と青い薬、お前はどっちを選ぶ？",
     ],
     action: [
         "それを明日、部下のフジモンにどう説明する？",
         "次の和歌山出張でどう試す？具体案を3つ書け。",
         "リョウさんに話したら笑われるぞ。もっと本質を突け。",
         "机上の空論はいい。行動計画（Action Plan）に変えろ。",
+        "で、具体的にいつやるんだ？カレンダーに入れたか？",
+        "計画だけなら誰でもできる。最初の一歩は何だ？",
+    ]
+};
+
+// Keyword patterns that trigger specific response types
+const KEYWORD_TRIGGERS = {
+    devil: [
+        '重要', 'ポイント', '大切', '必要', '本質', 'マインドセット',
+        '成長', '変化', '成功', '目標', '理想'
+    ],
+    action: [
+        '部下', 'チーム', '藤門', 'フジモン', '計画', 'プラン',
+        '予定', '実行', 'やる', 'する', '始める', '取り組む'
+    ],
+    serendipity: [
+        '理論', '定義', 'つまり', '要するに', '概念', '抽象',
+        'なぜ', '原因', '背景', '哲学', '思想'
     ]
 };
 
@@ -33,24 +55,33 @@ export const useJinnai = (currentBook: Book | null, noteContent: string) => {
     ]);
 
     const lastNoteLength = useRef(0);
-    const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+    const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+    const lastBookIdRef = useRef<string | null>(null);
 
     useEffect(() => {
         if (!currentBook) return;
 
-        // Clear previous generic messages when book changes
-        if (messages.length === 1 && messages[0].id === 'init') {
+        // Only trigger on book change
+        if (lastBookIdRef.current !== currentBook.id) {
+            lastBookIdRef.current = currentBook.id;
+
+            const greeting = currentBook.oneThing
+                ? `『${currentBook.title}』か。「${currentBook.oneThing}」…本気でそう思ってるのか？`
+                : `『${currentBook.title}』を選んだか。で、この本から何を盗むつもりだ？`;
+
             setMessages([{
                 id: 'start-' + currentBook.id,
-                text: `『${currentBook.title}』か。${currentBook.oneThing}…本気でそう思ってるのか？`,
+                text: greeting,
                 type: 'devil',
                 timestamp: new Date().toISOString()
             }]);
+            lastNoteLength.current = noteContent.length;
         }
-
-    }, [currentBook]);
+    }, [currentBook?.id]);
 
     useEffect(() => {
+        if (!currentBook) return;
+
         // Analyze content changes (Debounced)
         if (timeoutRef.current) clearTimeout(timeoutRef.current);
 
@@ -69,16 +100,35 @@ export const useJinnai = (currentBook: Book | null, noteContent: string) => {
 
     const triggerJinnaiResponse = (content: string) => {
         let type: 'devil' | 'serendipity' | 'action' = 'devil';
-        const rand = Math.random();
 
-        // Simple Keyword matching (Mock Logic)
-        if (content.includes("部下") || content.includes("チーム") || content.includes("藤門")) {
+        // Check keyword triggers first (priority order)
+        const contentLower = content.toLowerCase();
+
+        // Check action keywords (highest priority - encourage concrete steps)
+        const hasActionKeyword = KEYWORD_TRIGGERS.action.some(kw =>
+            content.includes(kw) || contentLower.includes(kw.toLowerCase())
+        );
+
+        // Check devil keywords (challenge assumptions)
+        const hasDevilKeyword = KEYWORD_TRIGGERS.devil.some(kw =>
+            content.includes(kw) || contentLower.includes(kw.toLowerCase())
+        );
+
+        // Check serendipity keywords (connect ideas)
+        const hasSerendipityKeyword = KEYWORD_TRIGGERS.serendipity.some(kw =>
+            content.includes(kw) || contentLower.includes(kw.toLowerCase())
+        );
+
+        // Determine type based on keywords with some randomness
+        if (hasActionKeyword && Math.random() > 0.3) {
             type = 'action';
-        } else if (content.includes("理論") || content.includes("定義") || content.includes("つまり")) {
-            type = 'serendipity'; // Connect abstract concepts
-        } else if (content.includes("重要") || content.includes("ポイント")) {
-            type = 'devil'; // Challenge importance
+        } else if (hasSerendipityKeyword && Math.random() > 0.4) {
+            type = 'serendipity';
+        } else if (hasDevilKeyword && Math.random() > 0.3) {
+            type = 'devil';
         } else {
+            // Random fallback
+            const rand = Math.random();
             if (rand > 0.6) type = 'action';
             else if (rand > 0.3) type = 'serendipity';
         }

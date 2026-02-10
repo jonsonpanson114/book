@@ -10,6 +10,7 @@ export interface Book {
     notes: string;
     coverColor: string; // Tailwind class, e.g., 'bg-red-900'
     lastUpdated: string;
+    tags?: string[]; // User-defined tags for categorization
 }
 
 export const MOCK_BOOKS: Book[] = [
