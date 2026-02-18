@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run dev:*)",
+      "Bash(timeout:*)",
+      "Bash(npm install:*)",
+      "Bash(npx tailwindcss:*)",
+      "Bash(ping:*)",
+      "Bash(start:*)",
+      "Bash(npx vite:*)",
+      "Bash(npx tsc:*)",
+      "Bash(del:*)",
+      "Bash(test:*)",
+      "Bash(ls -la \"c:\\\\Users\\\\jonso\\\\.gemini\\\\books\\\\public\"\" 2>&1 || echo \"public folder not found or empty \")",
+      "Bash(where:*)",
+      "Bash(npx vercel:*)",
+      "Bash(vercel:*)"
+    ]
+  }
+}

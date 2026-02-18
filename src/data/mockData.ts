@@ -11,6 +11,7 @@ export interface Book {
     coverColor: string; // Tailwind class, e.g., 'bg-red-900'
     lastUpdated: string;
     tags?: string[]; // User-defined tags for categorization
+    insights?: { text: string; timestamp: string }[]; // User's key insights from the book
 }
 
 export const MOCK_BOOKS: Book[] = [
@@ -24,6 +25,10 @@ export const MOCK_BOOKS: Book[] = [
         notes: '# 第1章：マインドセットとは\n\n- 固定思考（Fixed）と成長思考（Growth）\n- 失敗をどう捉えるか？\n  - Fixed: 才能がない証拠\n  - Growth: 学びの機会\n\n## 現場での適用\n部下のフジモンに対して、成果物だけで判断していないか？「アプローチ」を評価する言葉かけを意識する。',
         coverColor: 'bg-blue-900',
         lastUpdated: '2026-02-07T10:00:00',
+        insights: [
+            { text: '失敗を恐れるのは固定思考の証拠。成長のチャンスと捉え直す。', timestamp: '2026-02-07T10:30:00' },
+            { text: '部下を褒めるときは結果ではなく、努力のプロセスを評価する。', timestamp: '2026-02-07T11:00:00' }
+        ]
     },
     {
         id: '2',
@@ -35,6 +40,10 @@ export const MOCK_BOOKS: Book[] = [
         notes: '春が二階から落ちてくる冒頭の軽やかさ。\n遺伝子という「呪い」をどう解釈するか。\n\n> "楽しそうに生きていれば、重力なんて消してしまう" \n\n営業のプレッシャーも同じかもしれない。深刻ぶることで自分を守っていないか？',
         coverColor: 'bg-emerald-900',
         lastUpdated: '2026-02-01T15:30:00',
+        insights: [
+            { text: '深刻になりすぎると動けなくなる。軽やかさを保つ努力が必要。', timestamp: '2026-02-01T16:00:00' },
+            { text: '遺伝や環境は言い訳にできるが、行動は自分で選べる。', timestamp: '2026-02-01T16:30:00' }
+        ]
     },
     {
         id: '3',
@@ -57,6 +66,10 @@ export const MOCK_BOOKS: Book[] = [
         notes: '日本の製品がなぜ愛されるか？機能ではなく「不可思議さ」や「カワイイ」が鍵。\n\n建材の営業に「物語」はあるか？\n機能スペック競争からの脱却ヒント。',
         coverColor: 'bg-purple-900',
         lastUpdated: '2026-02-06T20:00:00',
+        insights: [
+            { text: '機能だけでは人は動かない。物語やファンタジーが必要。', timestamp: '2026-02-06T20:30:00' },
+            { text: '建材営業でも「この製品がある暮らし」を想像させる物語を作れないか？', timestamp: '2026-02-06T21:00:00' }
+        ]
     },
 ];
 

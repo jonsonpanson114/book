@@ -1,5 +1,5 @@
 import React from 'react';
-import { Book } from '../../data/mockData';
+import type { Book } from '../../data/mockData';
 import clsx from 'clsx';
 import { motion } from 'framer-motion';
 
@@ -39,18 +39,18 @@ export const BookSpine: React.FC<BookSpineProps> = ({ book, onClick, isSelected 
             </div>
 
             {/* The One Thing Tooltip/Overlay */}
-            <div className="absolute left-full top-0 ml-4 w-64 p-4 bg-[#1e293b]/95 backdrop-blur-md rounded-xl border border-yellow-500/20 shadow-2xl skew-y-0 opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-200 z-50">
-                <div className="text-yellow-500 text-xs font-bold uppercase tracking-widest mb-1">一行結論 (One Thing)</div>
-                <p className="text-slate-200 text-sm font-serif leading-relaxed">
+            <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 w-56 p-3 bg-[#1e293b]/95 backdrop-blur-md rounded-xl border border-yellow-500/20 shadow-2xl opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-200 z-50">
+                <div className="text-yellow-500 text-[10px] font-bold uppercase tracking-widest mb-1">一行結論</div>
+                <p className="text-slate-200 text-xs font-serif leading-relaxed">
                     "{book.oneThing}"
                 </p>
-                <div className="mt-2 text-slate-500 text-xs">
-                    状態: <span className="text-slate-300 capitalize">
-                        {book.status === 'reading' && '読書中'}
-                        {book.status === 'finished' && '読了'}
-                        {book.status === 'tsundoku' && '積読'}
-                    </span>
+                <div className="mt-1.5 text-slate-500 text-[10px]">
+                    {book.status === 'reading' && '📖 読書中'}
+                    {book.status === 'finished' && '✅ 読了'}
+                    {book.status === 'tsundoku' && '📚 積読'}
                 </div>
+                {/* Arrow pointing down */}
+                <div className="absolute top-full left-1/2 -translate-x-1/2 w-0 h-0 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-t-[6px] border-t-yellow-500/20" />
             </div>
         </motion.div>
     );

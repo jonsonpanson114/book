@@ -4,9 +4,10 @@ import { Brain, Library, User } from 'lucide-react';
 interface LayoutProps {
     children: React.ReactNode;
     sidebarContent?: React.ReactNode;
+    onProfileClick?: () => void;
 }
 
-export const Layout: React.FC<LayoutProps> = ({ children, sidebarContent }) => {
+export const Layout: React.FC<LayoutProps> = ({ children, sidebarContent, onProfileClick }) => {
     return (
         <div className="min-h-screen bg-[#0a0f1c] text-slate-300 flex overflow-hidden font-sans selection:bg-yellow-500/30">
             {/* Sidebar Navigation */}
@@ -21,10 +22,10 @@ export const Layout: React.FC<LayoutProps> = ({ children, sidebarContent }) => {
                             本棚
                         </span>
                     </button>
-                    <button className="p-3 rounded-xl hover:bg-white/5 transition-all text-slate-400 hover:text-white group relative">
+                    <button onClick={onProfileClick} className="p-3 rounded-xl hover:bg-white/5 transition-all text-slate-400 hover:text-white group relative">
                         <User className="w-5 h-5" />
                         <span className="absolute left-14 bg-slate-800 text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-50 pointer-events-none">
-                            プロフィール
+                            読書統計
                         </span>
                     </button>
                 </div>
