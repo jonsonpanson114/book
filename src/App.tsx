@@ -37,7 +37,7 @@ function App() {
       onProfileClick={() => setShowStats(true)}
     >
       {!selectedBook ? (
-        <div className="w-full h-full flex items-center justify-center p-8">
+        <div className="w-full h-full flex items-center justify-center p-4 md:p-8">
           <Bookshelf
             books={books}
             onSelectBook={(book) => setSelectedBookId(book.id)}
