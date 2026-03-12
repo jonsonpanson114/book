@@ -1,14 +1,27 @@
 import React from 'react';
-import { Brain, Library, User } from 'lucide-react';
+import { Brain, Library, User, Calendar, Zap, Trophy } from 'lucide-react';
 
 interface LayoutProps {
     children: React.ReactNode;
     sidebarContent?: React.ReactNode;
     onProfileClick?: () => void;
+    onHabitClick?: () => void;
+    currentLevel?: number;
+    currentXP?: number;
+    xpToNext?: number;
 }
 
-export const Layout: React.FC<LayoutProps> = ({ children, sidebarContent, onProfileClick }) => {
+export const Layout: React.FC<LayoutProps> = ({
+    children,
+    sidebarContent,
+    onProfileClick,
+    onHabitClick,
+    currentLevel = 1,
+    currentXP = 0,
+    xpToNext = 100,
+}) => {
     const [isMobileChatOpen, setIsMobileChatOpen] = React.useState(false);
+    const [activeTab, setActiveTab] = React.useState<'library' | 'habit' | 'stats'>('library');
 
     return (
         <div className="min-h-screen bg-[#0a0f1c] text-slate-300 flex overflow-hidden font-sans selection:bg-yellow-500/30">
@@ -18,13 +31,45 @@ export const Layout: React.FC<LayoutProps> = ({ children, sidebarContent, onProf
                     <Brain className="w-6 h-6 text-blue-400" />
                 </div>
                 <div className="flex-1 flex flex-col gap-6 w-full items-center">
-                    <button className="p-3 rounded-xl hover:bg-white/5 transition-all text-slate-400 hover:text-white group relative">
+                    <button
+                        onClick={() => {
+                            setActiveTab('library');
+                            window.dispatchEvent(new CustomEvent('nav-change', { detail: 'library' }));
+                        }}
+                        className={`p-3 rounded-xl transition-all group relative ${
+                            activeTab === 'library' ? 'bg-blue-500/20 text-blue-400' : 'hover:bg-white/5 text-slate-400 hover:text-white'
+                        }`}
+                    >
                         <Library className="w-5 h-5" />
                         <span className="absolute left-14 bg-slate-800 text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-50 pointer-events-none">
                             本棚
                         </span>
                     </button>
-                    <button onClick={onProfileClick} className="p-3 rounded-xl hover:bg-white/5 transition-all text-slate-400 hover:text-white group relative">
+                    <button
+                        onClick={() => {
+                            setActiveTab('habit');
+                            onHabitClick?.();
+                            window.dispatchEvent(new CustomEvent('nav-change', { detail: 'habit' }));
+                        }}
+                        className={`p-3 rounded-xl transition-all group relative ${
+                            activeTab === 'habit' ? 'bg-orange-500/20 text-orange-400' : 'hover:bg-white/5 text-slate-400 hover:text-white'
+                        }`}
+                    >
+                        <Calendar className="w-5 h-5" />
+                        <span className="absolute left-14 bg-slate-800 text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-50 pointer-events-none">
+                            習慣
+                        </span>
+                    </button>
+                    <button
+                        onClick={() => {
+                            setActiveTab('stats');
+                            onProfileClick?.();
+                            window.dispatchEvent(new CustomEvent('nav-change', { detail: 'stats' }));
+                        }}
+                        className={`p-3 rounded-xl transition-all group relative ${
+                            activeTab === 'stats' ? 'bg-emerald-500/20 text-emerald-400' : 'hover:bg-white/5 text-slate-400 hover:text-white'
+                        }`}
+                    >
                         <User className="w-5 h-5" />
                         <span className="absolute left-14 bg-slate-800 text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-50 pointer-events-none">
                             読書統計
@@ -38,9 +83,16 @@ export const Layout: React.FC<LayoutProps> = ({ children, sidebarContent, onProf
                 {/* Top Header - Glassmorphism */}
                 <header className="h-14 md:h-16 flex items-center justify-between px-4 md:px-8 border-b border-white/5 bg-[#0a0f1c]/80 backdrop-blur-md z-10 shrink-0">
                     <h1 className="text-base md:text-lg font-medium tracking-wide text-slate-200 flex items-center">
-                        <Brain className="w-5 h-5 mr-3 text-blue-400 md:hidden" /> {/* Mobile Logo */}
+                        <Brain className="w-5 h-5 mr-3 text-blue-400 md:hidden" />
                         Jinnai<span className="text-slate-600 mx-2">/</span>思考のアリーナ
                     </h1>
+
+                    {/* レベルバッジ */}
+                    <div className="hidden md:flex items-center gap-2 bg-[#0a0f1c] px-3 py-1.5 rounded-full border border-white/5">
+                        <Zap className="w-4 h-4 text-amber-400" />
+                        <span className="text-sm font-bold text-white">Lv.{currentLevel}</span>
+                        <span className="text-xs text-slate-500">{currentXP}/{xpToNext} XP</span>
+                    </div>
                 </header>
 
 
@@ -88,19 +140,45 @@ export const Layout: React.FC<LayoutProps> = ({ children, sidebarContent, onProf
 
             {/* Mobile Bottom Navigation */}
             <div className="md:hidden fixed bottom-0 left-0 right-0 h-16 bg-[#050810] border-t border-white/10 flex items-center justify-around z-50">
-                <button className="flex flex-col items-center gap-1 p-2 text-blue-400">
+                <button
+                    onClick={() => {
+                        setActiveTab('library');
+                        window.dispatchEvent(new CustomEvent('nav-change', { detail: 'library' }));
+                    }}
+                    className={`flex flex-col items-center gap-1 p-2 ${
+                        activeTab === 'library' ? 'text-blue-400' : 'text-slate-500'
+                    }`}
+                >
                     <Library className="w-5 h-5" />
                     <span className="text-[10px] font-medium">本棚</span>
                 </button>
 
-                {/* Center Action Button (Optional, e.g., Add Book) */}
-                <div className="w-12 h-12 -mt-6 bg-blue-600 rounded-full flex items-center justify-center shadow-lg shadow-blue-900/50 border-4 border-[#0a0f1c]">
-                    <div className="w-6 h-6 text-white font-bold text-xl flex items-center justify-center pb-1">+</div>
-                </div>
+                <button
+                    onClick={() => {
+                        setActiveTab('habit');
+                        onHabitClick?.();
+                        window.dispatchEvent(new CustomEvent('nav-change', { detail: 'habit' }));
+                    }}
+                    className={`flex flex-col items-center gap-1 p-2 ${
+                        activeTab === 'habit' ? 'text-orange-400' : 'text-slate-500'
+                    }`}
+                >
+                    <Calendar className="w-5 h-5" />
+                    <span className="text-[10px] font-medium">習慣</span>
+                </button>
 
-                <button onClick={onProfileClick} className="flex flex-col items-center gap-1 p-2 text-slate-500 hover:text-slate-300">
-                    <User className="w-5 h-5" />
-                    <span className="text-[10px] font-medium">統計</span>
+                <button
+                    onClick={() => {
+                        setActiveTab('stats');
+                        onProfileClick?.();
+                        window.dispatchEvent(new CustomEvent('nav-change', { detail: 'stats' }));
+                    }}
+                    className={`flex flex-col items-center gap-1 p-2 ${
+                        activeTab === 'stats' ? 'text-emerald-400' : 'text-slate-500'
+                    }`}
+                >
+                    <Trophy className="w-5 h-5" />
+                    <span className="text-[10px] font-medium">実績</span>
                 </button>
             </div>
         </div>
