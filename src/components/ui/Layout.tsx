@@ -83,8 +83,8 @@ export const Layout: React.FC<LayoutProps> = ({
                 {/* Top Header - Glassmorphism */}
                 <header className="h-14 md:h-16 flex items-center justify-between px-4 md:px-8 border-b border-white/5 bg-[#0a0f1c]/80 backdrop-blur-md z-10 shrink-0">
                     <h1 className="text-base md:text-lg font-medium tracking-wide text-slate-200 flex items-center">
-                        <Brain className="w-5 h-5 mr-3 text-blue-400 md:hidden" />
-                        Jinnai<span className="text-slate-600 mx-2">/</span>思考のアリーナ
+                        <Brain className="w-5 h-5 mr-3 text-blue-400 md:hidden" /> {/* Mobile Logo */}
+                        ビブリオダイブ<span className="text-slate-600 mx-2">/</span>思考のアリーナ
                     </h1>
 
                     {/* レベルバッジ */}

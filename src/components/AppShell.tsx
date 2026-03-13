@@ -35,7 +35,7 @@ export const AppShell: React.FC<AppShellProps> = ({ children, sidebarContent }) 
                 {/* Top Header - Glassmorphism */}
                 <header className="h-16 flex items-center px-8 border-b border-white/5 bg-[#0a0f1c]/80 backdrop-blur-md z-10">
                     <h1 className="text-lg font-medium tracking-wide text-slate-200">
-                        Jinnai<span className="text-slate-600 mx-2">/</span>思考のアリーナ
+                        ビブリオダイブ<span className="text-slate-600 mx-2">/</span>思考のアリーナ
                     </h1>
                 </header>
 

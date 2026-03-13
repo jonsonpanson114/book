@@ -1,6 +1,6 @@
 {
-  "name": "Jinnai - 読書メモ",
-  "short_name": "Jinnai",
+  "name": "ビブリオダイブ - 読書メモ",
+  "short_name": "ビブリオダイブ",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#0a0f1c",
